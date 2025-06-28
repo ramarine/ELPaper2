@@ -270,7 +270,6 @@ BinaryComponents read_binary_3(TTree *tree, string path ="/Configuration_18/C350
   int trig_idx;
   char name[100];
   const int nevents = 5000;
-  std::cout << "I am here "<< std::endl;
   //first, read the header.
   //name
   fread(&name, sizeof(char), 100, readfile);
@@ -452,6 +451,9 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
   std::vector<double>vect_cum(nentries,0);
   bool plotfig = false;
   std::vector<int> min_a;
+  std::vector<int> min_b;
+  std::vector<int> min_aft;
+  std::vector<int> min_bef;
 
 
 
@@ -500,7 +502,17 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
     }
     if (adc[i] < - rmsv[i]*NSigmas) {
       cadc += adc[i];// variable being passed to the Cum  TH1. Basicaly each entry in this histogram represents the integral up to that point.
-      if (TrigTimeIdx < i && i < a_idx ) min_a.push_back(i);
+      if (t0 < i && i < TrigTimeIdx ) {
+        min_bef.push_back(i);
+      } 
+      else if (TrigTimeIdx < i && i < a_idx ) {
+        min_a.push_back(i);
+        min_aft.push_back(i);
+      }
+      else if ( a_idx < i && i < ab_idx) {
+        min_b.push_back(i);
+        min_aft.push_back(i);
+      }
       //if (a_idx < i && i < ab_idx ) min_a.push_back(i);
 
     }
@@ -554,18 +566,22 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
 
   if (evt == debug){
     cout << "rms size "<<rmsv.size() << endl;
-    cout <<  "key "<<key_min_idx << endl;
+    cout << "key "<<key_min_idx << endl;
     cout << "1"<< endl;
   }
-  //define the event type (empty or signal)
-  if (key_min < -NSigmas * rmsv.at(key_min_idx) && intg_a_store > 25  && min_a.size() > 10 &&  TMath::Abs( key_min_idx -TrigTimeIdx) > 1000){
-    // if (key_min < -NSigmas * rmsv.at(key_min_idx) && intg_a_store >25 && min_a.size() > 10 )  {
-    evt_tag = "signal";
-  }
-  else evt_tag = "empty";
+  
+  if (key_min < -NSigmas * rmsv.at(key_min_idx) && TMath::Abs( key_min_idx -TrigTimeIdx) > 1000){
+    if (intg_a_store > 25  && min_a.size() > 10)
+      evt_tag = "signal";
+    } else if (intg_b_store > 25  && min_b.size() > 10){
+      evt_tag = "signal";
+    } else if (intg_bef_store > 25  && min_bef.size() > 10){
+      evt_tag = "signal";
+    } else if (intg_aft_store > 25  && min_aft.size() > 10){
+      evt_tag = "signal";
+    } else evt_tag = "empty";
+
   if(evt == debug) cout << "w"<< endl;
-  
-  
   if (evt == debug ) cout << " 11111 " << endl;
 
   return std::make_tuple(intg_a_store, intg_b_store, intg_bef_store, intg_aft_store, min_a, key_min_idx, evt_tag);
@@ -590,9 +606,10 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   std::vector<int>EmptyTrigger_evt_idx;
   std::vector<int>spark_evt_idx;
   std::vector<int> badPedestal_evt_idx;
-
-  string prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/";
-  string path_prefix_AnaResults = "/home/amarinei/Year1_PhD/TPC/EL_Paper2_Ana/results/"; 
+  
+  // string prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/";
+  string prefix_path_data = "/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_Data/Configuration_P25/";//for 1 bar pressure
+  string path_prefix_AnaResults = "/home/amarinei/Year1_PhD/TPC/ELPaper2/results/"; 
   
   TH1D *single = new TH1D("single","single",100,-0.5,0.05);
   TH1D *single_pos = new TH1D("single_pos","Positive ADC plotted in the negative",100,-0.5,0.05);
