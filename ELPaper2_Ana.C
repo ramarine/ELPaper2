@@ -280,6 +280,10 @@ void ELPaper2_Ana(){
   path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C4600_LSF2550_ThGUp2250_ThGDnGND_PMesh950_TPC1650_p2_0/");
   evt_num.push_back("4600");
   
+
+  //  
+  // Pressure 1.5 bar
+  // 
   
   path_store.push_back({});
   path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh0_TPC1650_p1_5/");
@@ -287,6 +291,8 @@ void ELPaper2_Ana(){
 
   //  path_store.push_back({});
   //path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh100_TPC1650_p1_5/");
+
+//
 
   path_store.push_back({});
   path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh150_TPC1650_p1_5/");
@@ -501,27 +507,85 @@ void ELPaper2_Ana(){
   //
   double ThGemContribution_a(0), ThGemContribution_ab(0);
   int ThGEMContrCount = 6;
-  
-  for (int i(0); i < file_store.size(); i++){
+
+  double bin_cut = 0.5;
+  // p1 bar
+  for (int i(0); i < 7; i++){
     // cout << "size " <<  hWFsumFlat_st.at(i)->GetNbinsX()<< endl;
-    for (int j(0); j < hWFsumFlat_st.at(i)->GetNbinsX(); j++){
-      if ( -0.06e-3 < hWFsumFlat_st.at(i)->GetBinCenter(j) && hWFsumFlat_st.at(i)->GetBinCenter(j) <-0.02e-3  ) {
-	SumOfWFSum_a.at(i) += hWFsumFlat_st.at(i)->GetBinContent(j);
+    TH1* h_rebinned = hWFsumFlat_st.at(i) ->Rebin(1000, "h_rebinned"); 
+    for (int j(0); j < h_rebinned->GetNbinsX(); j++){
+      // if (j == 0) {cout << "bin up edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;}
+      // else if (j == h_rebinned->GetNbinsX() - 1) cout << "bin low edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;
+      if ( -0.06e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <-0.02e-3  ) {
+	      if (h_rebinned->GetBinContent(j) > bin_cut) SumOfWFSum_a.at(i) += h_rebinned->GetBinContent(j);
       }
       
-      if ( -0.02e-3 < hWFsumFlat_st.at(i)->GetBinCenter(j) && hWFsumFlat_st.at(i)->GetBinCenter(j) <0.02e-3  ){
-	SumOfWFSum_ab.at(i) += hWFsumFlat_st.at(i)->GetBinContent(j);
+      if ( -0.02e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <0.02e-3  ){
+      	SumOfWFSum_ab.at(i) += h_rebinned->GetBinContent(j);
       }
     }
   }
-  
 
-      //-----------------------------------------------------------------
-    //------------------------Treating Errors--------------------------
-    // ----------------------------------------------------------------
+// p2 bar 7 , 16
+for (int i(7); i < 16; i++){
+  // cout << "size " <<  hWFsumFlat_st.at(i)->GetNbinsX()<< endl;
+  TH1* h_rebinned = hWFsumFlat_st.at(i) ->Rebin(1000, "h_rebinned"); 
+  for (int j(0); j < h_rebinned->GetNbinsX(); j++){
+    // if (j == 0) {cout << "bin up edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;}
+    // else if (j == h_rebinned->GetNbinsX() - 1) cout << "bin low edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;
+    // if (i ==7) cout << "bin content " << j << " is " << h_rebinned->GetBinContent(j) << std::endl;
+    if ( -0.06e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <-0.02e-3  ) {
+      if (h_rebinned->GetBinContent(j) > bin_cut) SumOfWFSum_a.at(i) += h_rebinned->GetBinContent(j);
+    }
+    
+    if ( -0.02e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <0.02e-3  ){
+      SumOfWFSum_ab.at(i) += h_rebinned->GetBinContent(j);
+    }
+  }
+}
+
+
+// p1.5 bar 16, 24
+for (int i(16); i < 24; i++){
+  // cout << "size " <<  hWFsumFlat_st.at(i)->GetNbinsX()<< endl;
+  TH1* h_rebinned = hWFsumFlat_st.at(i) ->Rebin(1000, "h_rebinned"); 
+  for (int j(0); j < h_rebinned->GetNbinsX(); j++){
+    // if (j == 0) {cout << "bin up edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;}
+    // else if (j == h_rebinned->GetNbinsX() - 1) cout << "bin low edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;
+    if ( -0.06e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <-0.02e-3  ) {
+      if (h_rebinned->GetBinContent(j) > bin_cut) SumOfWFSum_a.at(i) += h_rebinned->GetBinContent(j);
+    }
+    
+    if ( -0.02e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <0.02e-3  ){
+      SumOfWFSum_ab.at(i) += h_rebinned->GetBinContent(j);
+    }
+  }
+}
+
+// p 1.5 bar 24, 34
+for (int i(24); i < 34; i++){
+  // cout << "size " <<  hWFsumFlat_st.at(i)->GetNbinsX()<< endl;
+  TH1* h_rebinned = hWFsumFlat_st.at(i) ->Rebin(1000, "h_rebinned"); 
+  for (int j(0); j < h_rebinned->GetNbinsX(); j++){
+    // if (j == 0) {cout << "bin up edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;}
+    // else if (j == h_rebinned->GetNbinsX() - 1) cout << "bin low edge = " <<   h_rebinned->GetXaxis()->GetBinUpEdge(j) << std::endl;
+    if ( -0.06e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <-0.02e-3  ) {
+      if (h_rebinned->GetBinContent(j) > bin_cut) SumOfWFSum_a.at(i) += h_rebinned->GetBinContent(j);
+    }
+    
+    if ( -0.02e-3 < h_rebinned->GetXaxis()->GetBinUpEdge(j) && h_rebinned->GetXaxis()->GetBinUpEdge(j) <0.02e-3  ){
+      SumOfWFSum_ab.at(i) += h_rebinned->GetBinContent(j);
+    }
+  }
+}
+
+
+//-----------------------------------------------------------------
+//------------------------Treating Errors--------------------------
+// ----------------------------------------------------------------
   
     
-    //producing errors for the abs gain: the mean of the exponential distribution/ sqrt(NEntries)
+//producing errors for the abs gain: the mean of the exponential distribution/ sqrt(NEntries)
   
   std::vector<std::vector<double>> intg_a_store;
   std::vector<int> ct(path_store.size(), 0);
@@ -1038,28 +1102,50 @@ void ELPaper2_Ana(){
   gr_p2_0b_EL->Draw("ALP");
   //leg_EL_p2_0b->Draw();
 
-
-
   //----------------------------------//
   // Plots only made for the EL paper //
   //----------------------------------//
-  
-  TCanvas * cWFSum_0 = new TCanvas("cWFSum0","", 800,600);
-  TH1D * h_test = new TH1D("","title;Time (#mus); Equivalent number of photons", hWFsumFlat_ind_st[0].at(0)->GetNbinsX(), -20,80);
+  int p1_m0 = 0+1;
+  int p1_5_m0 = 24+1;
+  int p2_m0 = 7+1;
 
-  for (int i(0); i < hWFsumFlat_ind_st[0].at(0)->GetNbinsX(); i++){
-    h_test->SetBinContent(i,hWFsumFlat_ind_st.back().at(0)->GetBinContent(i));
+
+  TCanvas * cWFSum_0 = new TCanvas("cWFSum0","", 1800,1200);
+  cWFSum_0->Divide(1,3);
+  TH1D * h_WF_p1 = new TH1D("","title;Time (#mus); Equivalent number of photons", hWFsumFlat_ind_st[p1_m0].at(0)->GetNbinsX(), -20,80);
+  TH1D * h_WF_p1_5 = new TH1D("","title;Time (#mus); Equivalent number of photons", hWFsumFlat_ind_st[p1_5_m0].at(0)->GetNbinsX(), -20,80);
+  TH1D * h_WF_p2 = new TH1D("","title;Time (#mus); Equivalent number of photons", hWFsumFlat_ind_st[p2_m0].at(0)->GetNbinsX(), -20,80);
+
+
+  for (int i(0); i < hWFsumFlat_ind_st[p1_m0].at(0)->GetNbinsX(); i++){
+    h_WF_p1->SetBinContent(i,hWFsumFlat_ind_st[p1_m0].at(0)->GetBinContent(i));
   }
+
+  for (int i(0); i < hWFsumFlat_ind_st[p1_5_m0].at(0)->GetNbinsX(); i++){
+    h_WF_p1_5->SetBinContent(i,hWFsumFlat_ind_st[p1_5_m0].at(0)->GetBinContent(i));
+  }
+
+  for (int i(0); i < hWFsumFlat_ind_st[p2_m0].at(0)->GetNbinsX(); i++){
+    h_WF_p2->SetBinContent(i,hWFsumFlat_ind_st[p2_m0].at(0)->GetBinContent(i));
+  }
+
+  // for (int i(0); i < hWFsumFlat_ind_st[0].at(0)->GetNbinsX(); i++){
+  //   h_WF_p1->SetBinContent(i,hWFsumFlat_ind_st.back().at(0)->GetBinContent(i));
+  // }
+  cWFSum_0->cd(1);
+  h_WF_p1->Draw();
+  cWFSum_0->cd(2);
+  h_WF_p1_5->Draw();
+  cWFSum_0->cd(3);
+  h_WF_p2->Draw();
+  
   auto leg_SingleWF = new TLegend(0.1,0.7,0.48,0.9);
   
   char* title_SingleWF = Form("MESH %.0f V", V_PEN.at(2));
-  leg_SingleWF->AddEntry(h_test,title_SingleWF,"l");//800
+  leg_SingleWF->AddEntry(h_WF_p1,title_SingleWF,"l");//800
   leg_SingleWF->Draw("same");
-  
-  h_test->Draw();
-  
+ 
   gPad->Modified();
   gPad->Update();
-  
   
 }
