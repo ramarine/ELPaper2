@@ -276,7 +276,7 @@ BinaryComponents read_binary_3(TTree *tree, string path ="/Configuration_18/C350
   //cout << "Name of file is " << name << endl;
   //t0
   fread(&t0, sd, 1, readfile);
-  //cout << "t0 = "<< t0 << endl;
+  cout << "From binary t0 = "<< t0 << endl;
   fread(&tf, sd, 1, readfile);
   //dt
   fread(&dt, sd, 1, readfile);
