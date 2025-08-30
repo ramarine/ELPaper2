@@ -14,10 +14,10 @@ For pressure 1 data from EL Paper 2: `/home/amarinei/Year1_PhD/TPC/Comissioning/
 
 ### Analysis file
 
-`/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/SharedScripts/BinaryAna/ScriptsConfigP25/NegScan/ThGEM2150/GeneralAna_v8.C`
+`/home/amarinei/Year1_PhD/TPC/ELPaper2/GeneralAna_v8.C` --> This is for individual plots for single files
+` /home/amarinei/Year1_PhD/TPC/ELPaper2/ELPaper2_Ana.C` --> This is for all plots generated in the study. 
 
 `string prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/";`
-
 `string path_prefix_AnaResults = "/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/WFSumInvestigation";`
 
 ### Scripts which produce the plots on the EL2 paper
