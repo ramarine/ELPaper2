@@ -125,8 +125,8 @@ void EventDisplay(const string file_name = "/home/amarinei/Year1_PhD/TPC/ELPaper
   h1->GetYaxis()->SetTitleOffset(1.1);
   h1->Draw();
 
-  if ( type == "Signal" )      wtf->SaveAs(Form("Pdfs/Signal/evt_%d.root", Signal));
-  if ( type == "Empty" )      wtf->SaveAs(Form("Pdfs/Empty/evt_%d.root", Empty));
+  if ( type == "Signal" )      wtf->SaveAs(Form("Pdfs/Signal/evt_%d.pdf", Signal));
+  if ( type == "Empty" )      wtf->SaveAs(Form("Pdfs/Empty/evt_%d.pdf", Empty));
   // wtf->SaveAs("test.pdf");      
           
 
