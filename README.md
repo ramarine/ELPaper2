@@ -20,9 +20,6 @@ For pressure 1 data from EL Paper 2: `/home/amarinei/Year1_PhD/TPC/Comissioning/
 `string prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/";`
 `string path_prefix_AnaResults = "/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/WFSumInvestigation";`
 
-### Scripts which produce the plots on the EL2 paper
-
-/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/SharedScripts/BinaryAna/ScriptsConfigP25/ELPaper2_Ana.C 
 
 ### Data taking log
 
