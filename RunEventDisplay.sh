@@ -20,6 +20,7 @@ show_help() {
 # Default values
 evt=0
 mode="Signal"
+file_name="/home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root"
 
 
 if [[ "$1" == "--help" ]] || [[ "$2" == "--help" ]]; then
@@ -31,16 +32,23 @@ fi
 if [[ "$1" =~ ^[0-9]+$ ]]; then
   mode="Signal"
   evt=$1
+  echo "************************************************"
+  echo "Pay attention file name is set to default value: $file_name"
+  echo "************************************************"
 else
   # If first argument exists assign to mode
   if [ -n "$1" ]; then
     mode=$1
   fi
 
-  # If next argument exists and is not a flag, assign to mode
   if [ -n "$2" ]; then
-    evt=$2
+    mode=$2
+  fi
+
+  # If next argument exists and is not a flag, assign to mode
+  if [ -n "$3" ]; then
+    evt=$3
   fi
 fi
 
-root -l -b -q "EventDisplay.C(${evt},\"${mode}\")"
+root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${evt})"

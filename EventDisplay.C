@@ -60,7 +60,7 @@ void PlotMultiWF(std::vector<TH1*> hist ,const char * file_name){
 //main
 //------------------
 
-void EventDisplay(int evt = 0, string type = "Signal"){
+void EventDisplay(const string file_name = "/home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root", string type = "Signal",int evt = 0){
 
   gROOT->SetBatch();
   gROOT->SetStyle("Plain");
@@ -74,7 +74,7 @@ void EventDisplay(int evt = 0, string type = "Signal"){
 
   //enter the name of the file you want to investigate
   // TFile * file_store = TFile::Open("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/WFSumInvestigationC4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_5000_4.0RMS.root");
-  TFile * file_store = TFile::Open("/home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root"); 
+  TFile * file_store = TFile::Open(file_name.c_str()); 
        
   auto tree = file_store->Get<TTree>("T");
   TH1D *h1 =  new TH1D("h1","", 100000, -20,80);
