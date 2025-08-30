@@ -1,15 +1,19 @@
 #!/bin/bash
 
 show_help() {
+  echo "Usage: $0 [evt]"
   echo "Usage: $0 [AbsPathToFile]  [Type] [evt]"
+  echo "Usage: $0 [AbsPathToFile]  [Type] [many_plots] [how_many]"
   echo ""
   echo "Options:"
   echo "  --help       Show this help message and exit"
   echo ""
   echo "Arguments:"
-  echo "AbsPathToFile Absolute path to the ROOT file (default: /home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root)"
-  echo "  Event Type       Choose "Signal" or "Empty" event (default: Signal)"
-  echo "  evt              Event number to process (default: 0)"
+  echo "  AbsPathToFile      Absolute path to the ROOT file (default: /home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root)"
+  echo "  Type               Choose "Signal" or "Empty" event (default: Signal)"
+  echo "  evt                Event number to process (default: 0)"
+  echo "  many_plots         Set to true to process multiple events (default: false)" 
+  echo "  how_many           Number of events to process if many_plots is true (default: 1)" 
   echo ""
   echo "Example:"
   echo "  $0 1         Process event 1"
@@ -22,7 +26,8 @@ show_help() {
 evt=0
 mode="Signal"
 file_name="/home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root"
-
+many_plots="false"
+how_many=1
 
 if [[ "$1" == "--help" ]] || [[ "$2" == "--help" ]]; then
   show_help
@@ -39,7 +44,7 @@ if [[ "$1" =~ ^[0-9]+$ ]]; then
 else
   # If first argument exists assign to mode
   if [ -n "$1" ]; then
-    mode=$1
+    file_name=$1
   fi
 
   if [ -n "$2" ]; then
@@ -47,9 +52,22 @@ else
   fi
 
   # If next argument exists and is not a flag, assign to mode
-  if [ -n "$3" ]; then
-    evt=$3
+  if [[ -n "$3" && "$3" =~ ^[0-9]+$ ]]; then
+  evt=$3
+  else 
+    if [[ -n "$3" && ( "$3" == "true" || "$3" == "false" ) ]]; then
+      many_plots=$3
+    fi
+    if [ -n "$4" ]; then
+      how_many=$4
+    fi
   fi
 fi
 
-root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${evt})"
+if [ "$many_plots" = false ]; then
+  root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${evt})"
+elif [ "$many_plots" = true ]; then
+  for ((i=2; i<how_many; i++)); do
+    root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${i})"
+  done
+fi
