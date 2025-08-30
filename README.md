@@ -26,6 +26,23 @@ For pressure 1 data from EL Paper 2: `/home/amarinei/Year1_PhD/TPC/Comissioning/
 https://docs.google.com/spreadsheets/d/10en9j8fPv_pPa2r3pkVkPmqnrOk5nnK1XwuN5S1xI3I/edit?gid=0#gid=0
 
 
+### GeneralAna_v8
+
+In this file I take all events and I process them one by one. In this file I create the waveform sum histograms: raw, flat and sum.
+WF_sum_raw adds all the bins of the signal event waveforms. 
+WF_sum adds only bins above NSigma * rms. 
+
+Equivalently for histograms:
+hWF_sum_raw has the WF_sum_raw values.
+hWF_sum_flat has the WF_sum values.// no normalization. this the one we use in general. 
+hWF_sum has the normalize per bin height WF_sum values.
+
+
+
+
+
+### ELPaper2_Ana
+
 
 
 
