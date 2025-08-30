@@ -38,8 +38,7 @@ hWF_sum_flat has the WF_sum values.// no normalization. this the one we use in g
 hWF_sum has the normalize per bin height WF_sum values.
 
 
-
-
+The function where the Signal is defined is "Integral". Here one takes care of the spikes at 0.
 
 ### ELPaper2_Ana
 
