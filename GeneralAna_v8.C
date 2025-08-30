@@ -391,20 +391,26 @@ void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vect
   cout << "WF_sum_raw size " << WF_sum_raw.size() << endl;
   cout << "ampl_TPC size " << ampl_TPC->size() << endl;
   cout << "ampl_TPC[0] size " << ampl_TPC->at(0).size() << endl;
-  for (int i(0); i < sig_evt.size(); i++){
-    for(int j(0); j < ampl_TPC->at(sig_evt[i]).size(); j++){
-
+  for (int i(0); i < sig_evt.size(); i++){//iterate over signal events
+    cout << "Doing WF sum of evt " << sig_evt[i] << " ampl_TPC size " << ampl_TPC->at(sig_evt[i]).size() << endl;
+    for(int j(0); j < ampl_TPC->at(sig_evt[i]).size(); j++){//itarate over bins in each event this should be 100000
+      if (t0 -100 < j && j < t0+100){
+        cout << "RMA DEBUG " <<  ampl_TPC->at(sig_evt[i])[j] << " rms " << rmsv->at(sig_evt[i])[j] << " NSigmas*rms " << NSigmas*rmsv->at(sig_evt[i])[j] << endl;
+      }
       WF_sum_raw[j] += ampl_TPC->at(sig_evt[i]).at(j);
 
       if (ampl_TPC->at(sig_evt[i])[j] < -NSigmas * rmsv->at(sig_evt[i]).at(j)){
         WF_sum[j] += ampl_TPC->at(sig_evt[i]).at(j);
-
         bin_count[j] +=1;
       }
     }
   }
 
-
+  // Set the bin content of the histograms
+  // if bin_count is zero, it means that no event passed the threshold cut in that bin, so we just set the WF_sum to the raw value
+  // this is to avoid division by zero
+  // in any case, if bin_count is zero, it means that no event passed the threshold cut in that bin, so the value of WF_sum is not meaningful
+  // but at least we avoid NaN in the histogram
   for (int i(0); i<ampl_TPC->at(sig_evt[0]).size(); i++){
     hWF_sum_raw->SetBinContent(i,WF_sum_raw[i]);
     hWF_sum_flat-> SetBinContent(i,WF_sum[i]);
@@ -666,14 +672,10 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   int const ab_idx = TrigTimeIdx + int(extended_drift_time/dt);
 
 
-
-
+  //************************
+  //here the big chunk of analysis starts
+  //************************
   
-  // //    ************//************
-  //   //  here the big chunk of analysis starts
-  //    // ************//************
-  //             int evt = 0;
-
   std::vector<double> dum_vect_double(0,1);
   std::vector<int> dum_vect_int;
   double rand_doub = -100000.02;
@@ -697,7 +699,7 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   TBranch *B_empty = tree->Branch("Empty", &br_evt);
   TBranch *B_vect_cum = tree->Branch("cum_vect", &dum_vect_double);
   TBranch *B_min_counts_inDrift = tree->Branch("min_counts_inDrift", &min_a);
-  //             TBranch* min_counts_inDrift = tree->Branch("min_counts_inDrift", &rand_doub);
+  //TBranch* min_counts_inDrift = tree->Branch("min_counts_inDrift", &rand_doub);
 
 
   //TBranch *intg_a =NULL, TBranch *intg_b =NULL, TBranch *intg_bef =NULL;
@@ -722,15 +724,10 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
     }
     else if (ampl_TPC->at(evt).size() == 0 || rms_TPC->at(evt).size() == 1) continue;
     
-
-    // cout << "evt: " << i <<" min is  " << min << " happening at " <<time[min_idx] << endl;
-        
-    
     cout << " Doing the Integral of evt: " << evt << endl;
-    
-    
     auto intg_tuple   =  Integral(ampl_TPC->at(evt), rms_TPC->at(evt), time, NSigmas, single , single_pos , evt ,tree, WF_output, t0 , dt,  TrigTimeIdx , a_idx , ab_idx);
     cout << " Did the Intg: " << evt<<  endl;
+    
     intg_a = std::move(get<0>(intg_tuple));
     intg_b = std::move(get<1>(intg_tuple));
     intg_bef= std::move(get<2>(intg_tuple));
@@ -739,8 +736,7 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
     key_min_idx = std::move(get<5>(intg_tuple));
     evt_tag =   std::move(get<6>(intg_tuple));
 
-
-    //    B_intg_b->Fill();
+    // B_intg_b->Fill();
     // B_intg_a->Fill();
     // B_intg_bef->Fill();
     // B_intg_aft->Fill();
@@ -761,10 +757,8 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
 
   }
 
-
-  //        ofstream DataSetQuality_;
-
-  //     DataSetQuality_.open((path_prefix_AnaResults+path+Form("DataSetQuality_%d_%.1fRMS.txt", tot_evt, NSigmas)).c_str());
+  // ofstream DataSetQuality_;
+  // DataSetQuality_.open((path_prefix_AnaResults+path+Form("DataSetQuality_%d_%.1fRMS.txt", tot_evt, NSigmas)).c_str());
 
   cout << "The number of total events is " << tot_evt << endl;
   cout << "The number of empty triggers is " << EmptyTrigger_evt_idx.size() << endl;
@@ -797,14 +791,14 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
 
   GetWFSum(ampl_TPC, rms_TPC, signal_evt_idx, NSigmas, WF_output, t0, dt);
 
-  //  cout << " Did the WF: " << evt<<  endl;
+  // cout << " Did the WF: " << evt<<  endl;
   single->Write();
   single_pos->Write();
-  //     integral_bef->Write();
-  //     integral_aft->Write();
-  //     integral_a->Write();
-  //     integral_ab->Write();
- //     integral_a_ab->Write();
+  // integral_bef->Write();
+  // integral_aft->Write();
+  // integral_a->Write();
+  // integral_ab->Write();
+  // integral_a_ab->Write();
 
   TH1D* hHowManySignalEvt = new TH1D("hHowManySignalEvt","", 1,0,1);
   hHowManySignalEvt->SetBinContent(1,signal_evt_idx.size());

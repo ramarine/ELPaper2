@@ -348,7 +348,7 @@ void ELPaper2_Ana(){
   std::vector<std::vector<TH1D*> > hWFsumRaw_st(path_store.size(),std::vector<TH1D*>(0));
   std::vector<std::vector<TH1D*> > hWFsum_Ratio_st(path_store.size(),std::vector<TH1D*>(0));
 
-
+  
   std::vector<int> color_st;
   
   gStyle->SetPalette(kCividis);
@@ -460,13 +460,12 @@ void ELPaper2_Ana(){
       double dummy =0;
       for (int z(0); z < path_store.at(i).size(); z++){
         dummy +=  hWFsumFlat_ind_st.at(i).at(z)->GetBinContent(j);
-	//if (j == 0) norm_dummy +=HowManySignalEvt_ind.at(i).at(z) + HowManyEmptyEvt_ind.at(i).at(z);
-	if (j == 0) norm_dummy += HowManySignalEvt_ind.at(i).at(z) ;
+        //if (j == 0) norm_dummy +=HowManySignalEvt_ind.at(i).at(z) + HowManyEmptyEvt_ind.at(i).at(z);
+        if (j == 0) norm_dummy += HowManySignalEvt_ind.at(i).at(z) ;
       }
       //cout << " norm_dummy " << norm_dummy << endl;
       h1->SetBinContent(j,dummy/norm_dummy/con_fact_P25);//norm_dummy*con_fact_P24
       // norm_store.push_back(norm_dummy);
-      
     }
     
     h1->SetLineColor(color_st.at(i));
