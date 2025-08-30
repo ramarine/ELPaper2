@@ -1,12 +1,13 @@
 #!/bin/bash
 
 show_help() {
-  echo "Usage: $0  [Type] [evt]"
+  echo "Usage: $0 [AbsPathToFile]  [Type] [evt]"
   echo ""
   echo "Options:"
   echo "  --help       Show this help message and exit"
   echo ""
   echo "Arguments:"
+  echo "AbsPathToFile Absolute path to the ROOT file (default: /home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root)"
   echo "  Event Type       Choose "Signal" or "Empty" event (default: Signal)"
   echo "  evt              Event number to process (default: 0)"
   echo ""
