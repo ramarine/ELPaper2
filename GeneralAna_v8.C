@@ -54,7 +54,7 @@ double ConvertToPhot(double Amplitude, double dt);
 
 std::tuple<std::vector<double>, std::vector<double>, double, int> ADC_Ped_Subtracted(  vector<double>& adc, const int NPeds = 200, double NSigmas = 4. , int evt = -1 , double spark_tresh_local = -1.2, double up_spark_tresh_local = 0.2, double t0 =0., double dt = 0.   );
 
-void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vector<double>> &rmsv, std::vector<int>&sig_evt, int NSigmas = 4,   TFile *storeWF =NULL, const double t0 = 0, const double dt = 0);
+void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vector<double>> &rmsv, std::vector<int>&sig_evt, int NSigmas = 4,   TFile *storeWF =NULL, const double t0 = 0, const double dt = 0, const int TrigTimeIdx = 0);
 
 int GeneralAna_v3_test(string path = "");
 
@@ -367,7 +367,7 @@ BinaryComponents read_binary_3(TTree *tree, string path ="/Configuration_18/C350
 
 
 
-void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vector<double>> *rmsv, std::vector<int>&sig_evt, int NSigmas = 4,   TFile *storeWF =NULL, const double t0 = 0, const double dt = 0){
+void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vector<double>> *rmsv, std::vector<int>&sig_evt, int NSigmas = 4,   TFile *storeWF =NULL, const double t0 = 0, const double dt = 0, const int TrigTimeIdx = 0){
   //   int nentries = ampl_TPC[0].size();
   //   // std::vector <int> clean_evt;
   // std::vector <float> WF_sum_raw(ampl_TPC[0].size());
@@ -379,6 +379,7 @@ void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vect
   std::vector <double> WF_sum_raw(nentries);
   std::vector <double> WF_sum(nentries);
   std::vector <double> bin_count(nentries,0);
+
 
   // sig_evt = GetCleanEvents(ampl_TPC, spark_tresh_gl, up_spark_tresh_gl);
 
@@ -394,12 +395,12 @@ void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vect
   for (int i(0); i < sig_evt.size(); i++){//iterate over signal events
     cout << "Doing WF sum of evt " << sig_evt[i] << " ampl_TPC size " << ampl_TPC->at(sig_evt[i]).size() << endl;
     for(int j(0); j < ampl_TPC->at(sig_evt[i]).size(); j++){//itarate over bins in each event this should be 100000
-      if (t0 -100 < j && j < t0+100){
-        cout << "RMA DEBUG " <<  ampl_TPC->at(sig_evt[i])[j] << " rms " << rmsv->at(sig_evt[i])[j] << " NSigmas*rms " << NSigmas*rmsv->at(sig_evt[i])[j] << endl;
-      }
       WF_sum_raw[j] += ampl_TPC->at(sig_evt[i]).at(j);
 
       if (ampl_TPC->at(sig_evt[i])[j] < -NSigmas * rmsv->at(sig_evt[i]).at(j)){
+        if (19992 -100 < j && j < 19992 +100){// TODO: thias hardcoded around the trigger time, should be changed to be more general
+          if (ampl_TPC->at(sig_evt[i])[j] < -6* rmsv->at(sig_evt[i]).at(j)) continue;
+        }
         WF_sum[j] += ampl_TPC->at(sig_evt[i]).at(j);
         bin_count[j] +=1;
       }
@@ -575,7 +576,7 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
     cout << "key "<<key_min_idx << endl;
     cout << "1"<< endl;
   }
-  
+  //this if statement checks if the minimum is below threshold and if it is far enough from the trigger time (like this we avoid the spikes at 0)
   if (key_min < -NSigmas * rmsv.at(key_min_idx) && TMath::Abs( key_min_idx -TrigTimeIdx) > 1000){
     if (intg_a_store > 25  && min_a.size() > 10)
       evt_tag = "signal";
@@ -789,7 +790,7 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   //     DataSetQuality_.close();
   //     TFile *GeneralPlots_output = TFile::Open((path_prefix_AnaResults+path+Form("GeneralPlots_%d_%.1fRMS.root", tot_evt, NSigmas)).c_str(),"RECREATE");
 
-  GetWFSum(ampl_TPC, rms_TPC, signal_evt_idx, NSigmas, WF_output, t0, dt);
+  GetWFSum(ampl_TPC, rms_TPC, signal_evt_idx, NSigmas, WF_output, t0, dt, TrigTimeIdx);
 
   // cout << " Did the WF: " << evt<<  endl;
   single->Write();
