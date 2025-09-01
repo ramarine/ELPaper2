@@ -234,10 +234,10 @@ void ELPaper2_Ana(){
   path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh900_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
+
+
   // intclude the 2.0 bar pressure
-
-
-
+  // this run is with many instabilities 
   // path_store.push_back({});
   // path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/C4600_LSF2550_ThGUp2250_ThGDnGND_PMeshNeg100_TPC1650_p2_0_ii/");
   // evt_num.push_back("5000");
@@ -291,8 +291,6 @@ void ELPaper2_Ana(){
 
   //  path_store.push_back({});
   //path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh100_TPC1650_p1_5/");
-
-//
 
   path_store.push_back({});
   path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh150_TPC1650_p1_5/");

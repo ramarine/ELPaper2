@@ -276,7 +276,7 @@ BinaryComponents read_binary_3(TTree *tree, string path ="/Configuration_18/C350
   //cout << "Name of file is " << name << endl;
   //t0
   fread(&t0, sd, 1, readfile);
-  cout << "From binary t0 = "<< t0 << endl;
+  // cout << "From binary t0 = "<< t0 << endl;
   fread(&tf, sd, 1, readfile);
   //dt
   fread(&dt, sd, 1, readfile);
@@ -284,10 +284,10 @@ BinaryComponents read_binary_3(TTree *tree, string path ="/Configuration_18/C350
   fread(&t_evt, sd, 1, readfile);
   //n_entries_per_file
   fread(&nentries, sizeof(int), 1, readfile);
-  cout << "Number of entries per file = " << nentries << endl;
+  // cout << "Number of entries per file = " << nentries << endl;
   //trigger index
   fread(&trig_idx, sizeof(int), 1, readfile);
-  cout << "Index of scintillator minimum = " << trig_idx << endl;
+  // cout << "Index of scintillator minimum = " << trig_idx << endl;
 
 
   std::vector<vector<double>> ampl_TPC(tot_evt, (vector<double>(100000)));
@@ -388,18 +388,18 @@ void GetWFSum(std::vector<std::vector<double>> *ampl_TPC,  std::vector<std::vect
   TH1F * hWF_sum = new TH1F("hWFsum"," Sum Of Waveforms; Time [s]; Amplitude [V] ",nentries, t0-0.5e-9,((t0 + dt * nentries)-0.5e-9));
   TH1F * hBin_count = new TH1F("hBin_count"," entries in each WF bin; Time [s]; Amplitude [V]  ",nentries, t0-0.5e-9,((t0 + dt * nentries)-0.5e-9));
 
-  cout << "nentries " << nentries << endl;
-  cout << "WF_sum_raw size " << WF_sum_raw.size() << endl;
-  cout << "ampl_TPC size " << ampl_TPC->size() << endl;
-  cout << "ampl_TPC[0] size " << ampl_TPC->at(0).size() << endl;
+  // cout << "nentries " << nentries << endl;
+  // cout << "WF_sum_raw size " << WF_sum_raw.size() << endl;
+  // cout << "ampl_TPC size " << ampl_TPC->size() << endl;
+  // cout << "ampl_TPC[0] size " << ampl_TPC->at(0).size() << endl;
   for (int i(0); i < sig_evt.size(); i++){//iterate over signal events
-    cout << "Doing WF sum of evt " << sig_evt[i] << " ampl_TPC size " << ampl_TPC->at(sig_evt[i]).size() << endl;
+    // cout << "Doing WF sum of evt " << sig_evt[i] << " ampl_TPC size " << ampl_TPC->at(sig_evt[i]).size() << endl;
     for(int j(0); j < ampl_TPC->at(sig_evt[i]).size(); j++){//itarate over bins in each event this should be 100000
       WF_sum_raw[j] += ampl_TPC->at(sig_evt[i]).at(j);
 
       if (ampl_TPC->at(sig_evt[i])[j] < -NSigmas * rmsv->at(sig_evt[i]).at(j)){
-        if (19992 -100 < j && j < 19992 +100){// TODO: thias hardcoded around the trigger time, should be changed to be more general
-          if (ampl_TPC->at(sig_evt[i])[j] < -6* rmsv->at(sig_evt[i]).at(j)) continue;
+        if (TrigTimeIdx -500 < j && j < TrigTimeIdx +500){
+          if (ampl_TPC->at(sig_evt[i])[j] < -5* rmsv->at(sig_evt[i]).at(j)) continue;
         }
         WF_sum[j] += ampl_TPC->at(sig_evt[i]).at(j);
         bin_count[j] +=1;
@@ -479,7 +479,7 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
   double a1,a2,sampling;
   string line;
 
-  cout << "nentries " << nentries << endl;
+  // cout << "nentries " << nentries << endl;
   static TH1F *Cum = NULL;
   if( Cum )
   Cum->Reset();
@@ -571,11 +571,7 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
 
   std::string evt_tag;
 
-  if (evt == debug){
-    cout << "rms size "<<rmsv.size() << endl;
-    cout << "key "<<key_min_idx << endl;
-    cout << "1"<< endl;
-  }
+  
   //this if statement checks if the minimum is below threshold and if it is far enough from the trigger time (like this we avoid the spikes at 0)
   if (key_min < -NSigmas * rmsv.at(key_min_idx) && TMath::Abs( key_min_idx -TrigTimeIdx) > 1000){
     if (intg_a_store > 25  && min_a.size() > 10)
@@ -588,8 +584,6 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
       evt_tag = "signal";
     } else evt_tag = "empty";
 
-  if(evt == debug) cout << "w"<< endl;
-  if (evt == debug ) cout << " 11111 " << endl;
 
   return std::make_tuple(intg_a_store, intg_b_store, intg_bef_store, intg_aft_store, min_a, key_min_idx, evt_tag);
 
@@ -615,7 +609,15 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   std::vector<int> badPedestal_evt_idx;
   
   // string prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/";
-  string prefix_path_data = "/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_Data/Configuration_P25/";//for 1 bar pressure
+  string prefix_path_data= "";
+  if (path.substr(0, 3) == "C38") {
+    prefix_path_data = "/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_Data/Configuration_P25/";
+  } else if (path.substr(0, 3) == "C45") {
+    prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/"; //for t bars and 2150ThGEM
+  } else if (path.substr(0, 3) == "C42") {
+    prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_1_5/"; // for 1.5 bars
+  }
+  
   string path_prefix_AnaResults = "/home/amarinei/Year1_PhD/TPC/ELPaper2/results/"; 
   
   TH1D *single = new TH1D("single","single",100,-0.5,0.05);
@@ -636,7 +638,7 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   if (dir) {
     /* Directory exists. */
     closedir(dir);
-    std::cout<< " Directory exists " << endl;
+    // std::cout<< " Directory exists " << endl;
   } else if (ENOENT == errno) {
     gSystem->MakeDirectory((path_prefix_AnaResults+path).c_str());
   } else {
@@ -655,7 +657,7 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
 
   // const double  t0 = bin1.T0;
   const double  t0 = -8e-5;
-  cout  << "The time 0  is " << t0 << endl;
+  // cout  << "The time 0  is " << t0 << endl;
   const double  dt = bin1.Dt;
   int const  nentries = bin1.Nentries;
 
@@ -668,7 +670,7 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   const double extended_drift_time = 80e-6;
 
   int const TrigTimeIdx = bin1.Trig_idx;
-  cout << "Trig Time IDx " << TrigTimeIdx << endl;
+  // cout << "Trig Time IDx " << TrigTimeIdx << endl;
   int const a_idx = TrigTimeIdx + int(drift_time/dt);
   int const ab_idx = TrigTimeIdx + int(extended_drift_time/dt);
 
@@ -725,9 +727,9 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
     }
     else if (ampl_TPC->at(evt).size() == 0 || rms_TPC->at(evt).size() == 1) continue;
     
-    cout << " Doing the Integral of evt: " << evt << endl;
+    // cout << " Doing the Integral of evt: " << evt << endl;
     auto intg_tuple   =  Integral(ampl_TPC->at(evt), rms_TPC->at(evt), time, NSigmas, single , single_pos , evt ,tree, WF_output, t0 , dt,  TrigTimeIdx , a_idx , ab_idx);
-    cout << " Did the Intg: " << evt<<  endl;
+    // cout << " Did the Intg: " << evt<<  endl;
     
     intg_a = std::move(get<0>(intg_tuple));
     intg_b = std::move(get<1>(intg_tuple));
@@ -761,12 +763,12 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   // ofstream DataSetQuality_;
   // DataSetQuality_.open((path_prefix_AnaResults+path+Form("DataSetQuality_%d_%.1fRMS.txt", tot_evt, NSigmas)).c_str());
 
-  cout << "The number of total events is " << tot_evt << endl;
-  cout << "The number of empty triggers is " << EmptyTrigger_evt_idx.size() << endl;
-  cout << "The number of signal events is " << signal_evt_idx.size() << endl;
-  cout << "The number of spark events is " << spark_evt_idx.size() << endl;
-  cout << "The number of bad pedestal events is " <<  badPedestal_evt_idx.size() << endl;
-  cout << " A total of " << EmptyTrigger_evt_idx.size() +signal_evt_idx.size() + spark_evt_idx.size() + badPedestal_evt_idx.size()<< " events have been written to the following file " << path_prefix_AnaResults + path   << endl;
+  cout << "    The number of total events is " << tot_evt << endl;
+  cout << "    The number of empty triggers is " << EmptyTrigger_evt_idx.size() << endl;
+  cout << "    The number of signal events is " << signal_evt_idx.size() << endl;
+  cout << "    The number of spark events is " << spark_evt_idx.size() << endl;
+  cout << "    The number of bad pedestal events is " <<  badPedestal_evt_idx.size() << endl;
+  cout << "A total of " << EmptyTrigger_evt_idx.size() +signal_evt_idx.size() + spark_evt_idx.size() + badPedestal_evt_idx.size()<< " events have been written to the following file " << path_prefix_AnaResults + path   << endl;
 
   //     DataSetQuality_ << (path_prefix_AnaResults+path+Form("DataSetQuality_%d_%.1fRMS.txt", tot_evt, NSigmas)).c_str() << endl;
   //     DataSetQuality_ << " " << endl;
@@ -833,6 +835,5 @@ int GeneralAna_v8(string path = "", const int tot_evt = 5000){
   WF_output->Close();
 
   return 1;
-
 
 }
