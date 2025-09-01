@@ -160,36 +160,43 @@ void ELPaper2_Ana(){
   int p1_5_ds = pen_mesh_p1_5.size(); // number of data sets taken at p1                                                                  
 
   // asdasdasd
+
+  // prefix_path_data = "/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_Data/Configuration_P25/";
+  // prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_2/NegScan/ThGEM2150/"; //for t bars and 2150ThGEM
+  // prefix_path_data = "/srv/beegfs/scratch/users/a/amarinei/Swan_Data/Configuration_P25/Batch_1_5/"; // for 1.5 bars
+  
+  std::string result_path="/home/amarinei/Year1_PhD/TPC/ELPaper2/results/";
+  // std::string result_path = "/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/";
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh0_TPC1650_p1_0/");
+  path_store.back().push_back(result_path + "C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh0_TPC1650_p1_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh250_TPC1650_p1_0/");
+  path_store.back().push_back(result_path +"C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh250_TPC1650_p1_0/");
   evt_num.push_back("5000");
 
   //  path_store.push_back({});
   // path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3500_LSF1750_ThGUp1450_ThGDnGND_PMesh320_TPC1650_p1_0/");
   
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh320_TPC1650_p1_0/");
+  path_store.back().push_back(result_path +"C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh320_TPC1650_p1_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh427_TPC1650_p1_0/");
+  path_store.back().push_back(result_path +"C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh427_TPC1650_p1_0/");
   evt_num.push_back("5000");
 
 
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh545_TPC1650_p1_0/");
+  path_store.back().push_back(result_path +"C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh545_TPC1650_p1_0/");
   evt_num.push_back("5000");
  
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh650_TPC1650_p1_0/");
+  path_store.back().push_back(result_path +"C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh650_TPC1650_p1_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/home/amarinei/Year1_PhD/TPC/Comissioning/TPC_Ana/LeCroyPMT_Ana/Swan_TTrees/Configuration_P25/C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh750_TPC1650_p1_0/");
+  path_store.back().push_back(result_path +"C3800_LSF1750_ThGUp1450_ThGDnGND_PMesh750_TPC1650_p1_0/");
   evt_num.push_back("5000");
 
   // inluce the 2.0 bar with ThGEM2150
@@ -197,41 +204,41 @@ void ELPaper2_Ana(){
 
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0_ii/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0_ii/");
   evt_num.push_back("5000");
   
   
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh100_TPC1650_p2_0_ii/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh100_TPC1650_p2_0_ii/");
   evt_num.push_back("5000");
 
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh150_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh150_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh200_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh200_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh300_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh300_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh400_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh400_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh500_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh500_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh600_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh600_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_2/NegScan/ThGEM2150/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh900_TPC1650_p2_0/");
+  path_store.back().push_back(result_path +"C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh900_TPC1650_p2_0/");
   evt_num.push_back("5000");
 
 
@@ -286,46 +293,46 @@ void ELPaper2_Ana(){
   // 
   
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh0_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh0_TPC1650_p1_5/");
   evt_num.push_back("5000");
 
   //  path_store.push_back({});
   //path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh100_TPC1650_p1_5/");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh150_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh150_TPC1650_p1_5/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh300_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh300_TPC1650_p1_5/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh375_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh375_TPC1650_p1_5/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh480_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh480_TPC1650_p1_5/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh590_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh590_TPC1650_p1_5/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh640_TPC1650_p1_5_ii/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh640_TPC1650_p1_5_ii/");
   evt_num.push_back("5000");
 
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh700_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh700_TPC1650_p1_5/");
   evt_num.push_back("5000");
   
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh800_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh800_TPC1650_p1_5/");
   evt_num.push_back("5000");
  
   path_store.push_back({});
-  path_store.back().push_back("/srv/beegfs/scratch/users/a/amarinei/Swan_TTrees/Configuration_P25/Batch_1_5/C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh900_TPC1650_p1_5/");
+  path_store.back().push_back(result_path +"C4200_LSF2150_ThGUp1850_ThGDnGND_PMesh900_TPC1650_p1_5/");
   evt_num.push_back("5000");  
 
   

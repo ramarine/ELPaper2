@@ -60,7 +60,7 @@ void PlotMultiWF(std::vector<TH1*> hist ,const char * file_name){
 //main
 //------------------
 
-void EventDisplay(const string file_name = "/home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root", string type = "Signal",int evt = 0){
+void EventDisplay(const string file_name = "/home/amarinei/Year1_PhD/TPC/ELPaper2/results/C4500_LSF2450_ThGUp2150_ThGDnGND_PMesh0_TPC1650_p2_0/WF_output_50_4.0RMS.root", string type = "Signal",int evt = 0, const string outdir = "Batch_2" ){
 
   gROOT->SetBatch();
   gROOT->SetStyle("Plain");
@@ -125,8 +125,20 @@ void EventDisplay(const string file_name = "/home/amarinei/Year1_PhD/TPC/ELPaper
   h1->GetYaxis()->SetTitleOffset(1.1);
   h1->Draw();
 
-  if ( type == "Signal" )      wtf->SaveAs(Form("Pdfs/Signal/evt_%d.pdf", Signal));
-  if ( type == "Empty" )      wtf->SaveAs(Form("Pdfs/Empty/evt_%d.pdf", Empty));
+  if ( type == "Signal" ) {
+    std::string dir_path = "Pdfs/" + outdir + "/Signal";
+    gSystem->MakeDirectory(("Pdfs/" + outdir).c_str());
+    gSystem->MakeDirectory(dir_path.c_str());
+    std::string file_path = dir_path + Form("/evt_%d.pdf", Signal);
+    wtf->SaveAs(file_path.c_str());
+  }      
+  if ( type == "Empty" ) {
+    std::string dir_path = "Pdfs/" + outdir + "/Empty";
+    gSystem->MakeDirectory(("Pdfs/" + outdir).c_str());
+    gSystem->MakeDirectory(dir_path.c_str());
+    std::string file_path = dir_path + Form("/evt_%d.pdf", Empty);
+    wtf->SaveAs(file_path.c_str());
+  }     
   // wtf->SaveAs("test.pdf");      
           
 

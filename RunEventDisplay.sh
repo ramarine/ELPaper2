@@ -1,9 +1,10 @@
 #!/bin/bash
 
 show_help() {
+  echo ""
   echo "Usage: $0 [evt]"
-  echo "Usage: $0 [AbsPathToFile]  [Type] [evt]"
-  echo "Usage: $0 [AbsPathToFile]  [Type] [many_plots] [how_many]"
+  echo "Usage: $0 [AbsPathToFile]  [Type] [evt] [outdir]"
+  echo "Usage: $0 [AbsPathToFile]  [Type] [many_plots] [how_many] [outdir]"
   echo ""
   echo "Options:"
   echo "  --help       Show this help message and exit"
@@ -14,6 +15,7 @@ show_help() {
   echo "  evt                Event number to process (default: 0)"
   echo "  many_plots         Set to true to process multiple events (default: false)" 
   echo "  how_many           Number of events to process if many_plots is true (default: 1)" 
+  echo "  outdir             Output directory inside Pdfs/ to save the plots (default: Batch_2)"
   echo ""
   echo "Example:"
   echo "  $0 1         Process event 1"
@@ -54,6 +56,9 @@ else
   # If next argument exists and is not a flag, assign to mode
   if [[ -n "$3" && "$3" =~ ^[0-9]+$ ]]; then
   evt=$3
+  if [ -n "$4" ]; then
+      outdir=$4
+    fi
   else 
     if [[ -n "$3" && ( "$3" == "true" || "$3" == "false" ) ]]; then
       many_plots=$3
@@ -61,13 +66,19 @@ else
     if [ -n "$4" ]; then
       how_many=$4
     fi
+    if [ -n "$5" ]; then
+      outdir=$5
+    fi
   fi
 fi
 
 if [ "$many_plots" = false ]; then
   root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${evt})"
 elif [ "$many_plots" = true ]; then
-  for ((i=2; i<how_many; i++)); do
-    root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${i})"
+  for ((i=0; i<how_many; i++)); do
+    root -l -b -q "EventDisplay.C(\"${file_name}\",\"${mode}\",${i},\"${outdir}\")"
   done
+  # cd Pdfs/$outdir/$mode
+  ./ConcatenatePdfs.sh $outdir
+  cd -
 fi
