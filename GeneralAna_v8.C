@@ -494,7 +494,7 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
 
 
 
-  if (evt == debug ) cout << " 1 " << endl ;
+  // if (evt == debug ) cout << " 1 " << endl ;
 
   double cadc = 0.;
   int iaccum = 0;
@@ -556,7 +556,7 @@ std::tuple<double, double, double, double, std::vector<int>, int, std::string> I
 
 
 
-  if (evt == debug ) cout << " 2 " << endl ;
+  // if (evt == debug ) cout << " 2 " << endl ;
 
   double IntgNormBef = (time[TrigTimeIdx]-t0);
   double IntgNormAft = (time.back()-time[TrigTimeIdx]);

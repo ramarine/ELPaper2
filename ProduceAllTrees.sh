@@ -31,7 +31,7 @@ total=${#commands[@]}
 count=1
 
 for cmd in "${commands[@]}"; do
-  echo "Running file $count/$total: $cmd"
+  echo "Running file $count/$total"
   root -l -b -q "GeneralAna_v8.C(\"$cmd\",5000)"
   ((count++))
 done
